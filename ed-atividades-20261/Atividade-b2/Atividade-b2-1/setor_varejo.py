@@ -1,81 +1,34 @@
-import time
+import random
+fila1 = []
 
-class Node:
-    def __init__ (self, data = None):
-        self.data = data
-        self.next = None
-        
-    def __str__ (self):
-        return f"{self.data}"
+itens = [
+    "Camiseta Polo",
+    "Calça Jeans",
+    "Tênis Esportivo",
+    "Jaqueta Bomber",
+    "Meia Cano Longo",
+    "Boné Aba Curva",
+    "Shorts Tactel",
+    "Vestido Floral",
+    "Camisa Social",
+    "Moletom Canguru",
+]
 
 class Fila1:
-    def __init__ (self):
-        self.first = None
-        self.last = None
-        
-    '''
-        def __repr__ (self) :
-            r = ""
-            pointer = self.first
-            while (pointer):
-                r += f"{pointer.data} "
-                pointer = pointer.next
-            return r
-    '''
-    
-    def __str__ (self) :
-        r = ""
-        pointer = self.first
-        while (pointer):
-            r += f"{pointer.data["name"]} {pointer.data["value"]}\n"
-            pointer = pointer.next
-        return r
-    
-    def __getitem__ (self, index):
-        pointer = self.first
-        i = 0
-        while (pointer):
-            i += 1
-            if i > index:
-                return f"{pointer.data}"
-            pointer = pointer.next
-            
 
-    def push (self, elem):
-        try :
-            node = Node(elem)
-            if self.last is None:
-                self.last = node
-            else :
-                self.last.next = node
-                self.last = node
-                
-            if self.first is None:
-                self.first = node
-        except ValueError:
-            return ValueError
-            
-    def pop (self):
-        if self.first is not None:
-            elem = self.first.data
-            self.first = self.first.next
-            return elem
-    
-    def peek (self):
-        if self.first is not None:
-            return self.first.data
-    
-    '''
-        def showQueue (self):
-            pointer = self.first
-            while (pointer):
-                time.sleep(0.5)
-                print(f"{pointer.data["name"]} {pointer.data["value"]}\n")
-                pointer = pointer.next
-    ''' 
-        
-fila = Fila1()
-fila.push({id: 1, "name": "Notebook", "value": 400})
-fila.push({id: 1, "name": "Jewel", "value": 700})
-fila.push({id: 1, "name": "Notebook", "value": 930})
-fila.showFila()
+
+    def inserir_pedido(self, id_pedido, nome_item, quantidade_pecas):
+        pedido = {
+            "id_pedido": id_pedido,
+            "nome_item": nome_item,
+            "quantidade_pecas": quantidade_pecas
+        }
+        fila1.append(pedido)
+        print(f"ID: {id_pedido}, Item: {nome_item}, Qtd: {quantidade_pecas} peças")
+
+    def mostrar_fila1(self):
+        print("\nFila 1 - Pedidos Pendentes:")
+        if len(fila1) == 0:
+            print("  (fila vazia)")
+        for pedido in fila1:
+            print(f"  ID: {pedido["id_pedido"]}, Item: {pedido["nome_item"]}, Qtd: {pedido["quantidade_pecas"]} peças")
