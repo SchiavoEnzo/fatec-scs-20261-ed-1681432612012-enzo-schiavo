@@ -1,93 +1,81 @@
-import random
+import time
 
-fila1 = []
-fila2 = []
+class Node:
+    def __init__ (self, data = None):
+        self.data = data
+        self.next = None
+        
+    def __str__ (self):
+        return f"{self.data}"
 
-itens = [
-    "Camiseta Polo",
-    "Calça Jeans",
-    "Tênis Esportivo",
-    "Jaqueta Bomber",
-    "Meia Cano Longo",
-    "Boné Aba Curva",
-    "Shorts Tactel",
-    "Vestido Floral",
-    "Camisa Social",
-    "Moletom Canguru",
-]
+class Fila1:
+    def __init__ (self):
+        self.first = None
+        self.last = None
+        
+    '''
+        def __repr__ (self) :
+            r = ""
+            pointer = self.first
+            while (pointer):
+                r += f"{pointer.data} "
+                pointer = pointer.next
+            return r
+    '''
+    
+    def __str__ (self) :
+        r = ""
+        pointer = self.first
+        while (pointer):
+            r += f"{pointer.data["nome_item"]} {pointer.data["quantidade_pecas"]}\n"
+            pointer = pointer.next
+        return r
+    
+    def __getitem__ (self, index):
+        pointer = self.first
+        i = 0
+        while (pointer):
+            i += 1
+            if i > index:
+                return f"{pointer.data}"
+            pointer = pointer.next
+            
 
-def inserir_pedido(id_pedido, nome_item, quantidade_pecas):
-    pedido = {
-        "id_pedido": id_pedido,
-        "nome_item": nome_item,
-        "quantidade_pecas": quantidade_pecas
-    }
-    fila1.append(pedido)
-    print("ID: " + str(id_pedido) + ", Item: " + nome_item + ", Qtd: " + str(quantidade_pecas) + " peças")
-
-def mostrar_fila1():
-    print("\nFila 1 - Pedidos Pendentes:")
-    if len(fila1) == 0:
-        print("  (fila vazia)")
-    for pedido in fila1:
-        print("  ID: " + str(pedido["id_pedido"]) + ", Item: " + pedido["nome_item"] + ", Qtd: " + str(pedido["quantidade_pecas"]) + " peças")
-
-def mostrar_fila2():
-    print("\nFila 2 - Lotes Consolidados:")
-    if len(fila2) == 0:
-        print("  (fila vazia)")
-    for lote in fila2:
-        print("  Lote: " + str(lote["ids_pedidos"]) + " | Total: " + str(lote["total_pecas"]) + " peças | Prioridade: " + lote["prioridade"])
-
-def processar_lotes():
-    numero_lote = 1
-
-    while len(fila1) > 0:
-        pedidos_do_lote = []
-        total = 0
-        ids = []
-
-        while len(fila1) > 0:
-            proximo = fila1[0]
-            total = total + proximo["quantidade_pecas"]
-            pedidos_do_lote.append(fila1.pop(0))
-            ids.append(proximo["id_pedido"])
-
-            if total > 50:
-                break
-
-        if total > 50:
-            prioridade = "Alta (Carga Fechada)"
-        else:
-            prioridade = "Normal"
-
-        lote = {
-            "numero_lote": numero_lote,
-            "ids_pedidos": ids,
-            "total_pecas": total,
-            "prioridade": prioridade
-        }
-
-        fila2.append(lote)
-        print("  Lote " + str(numero_lote) + " criado -> IDs: " + str(ids) + " | Total: " + str(total) + " peças | Prioridade: " + prioridade)
-
-        numero_lote = numero_lote + 1
-
-
-print("=== GERANDO PEDIDOS NA FILA 1 ===")
-
-id_atual = 701
-
-for i in range(8):
-    nome = random.choice(itens)
-    quantidade = random.randint(5, 40)
-    inserir_pedido(id_atual, nome, quantidade)
-    id_atual = id_atual + 1
-
-mostrar_fila1()
-
-print("\n=== PROCESSANDO LOTES ===")
-processar_lotes()
-
-mostrar_fila1()
-mostrar_fila2()
+    def push (self, elem):
+        try :
+            if elem["id_pedido"] is not None and elem["nome_item"] is not None and elem["quantidade_pecas"] is not None:
+                node = Node(elem)
+                if self.last is None:
+                    self.last = node
+                else :
+                    self.last.next = node
+                    self.last = node
+                    
+                if self.first is None:
+                    self.first = node
+                return elem
+            else:
+                print("Valor inserido em formato incorreto.\n O valor correto é : {id: valor_do_id, nome: nome, quantidade_de_pecas: qtde_de_pecas")
+                return elem
+        except ValueError:
+            print(ValueError)
+            return elem
+            
+    def pop (self):
+        if self.first is not None:
+            elem = self.first.data
+            self.first = self.first.next
+            return elem
+    
+    def peek (self):
+        if self.first is not None:
+            return self.first.data
+    
+    '''
+    def showQueue (self):
+        pointer = self.first
+        while (pointer):
+            time.sleep(0.5)
+            print(f"{pointer.data["nome_item"]} {pointer.data["quantidade_pecas"]}\n")
+            pointer = pointer.next
+    '''
